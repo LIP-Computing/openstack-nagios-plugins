@@ -40,6 +40,7 @@ class Resource(NagiosResource):
         """
         cloud = shade.openstack_cloud()
         opcloud = shade.operator_cloud()
+        return cloud, opcloud
 
     def get_openstack_vars(self, args=None):
 
