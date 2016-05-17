@@ -23,7 +23,7 @@
 import time
 import openstacknagios.openstacknagios as osnag
 
-from novaclient.client import Client
+# from novaclient.client import Client
 
 
 class NovaImages(osnag.Resource):
@@ -32,7 +32,7 @@ class NovaImages(osnag.Resource):
     """
 
     def __init__(self, args=None):
-        self.openstack = self.get_openstack_vars(args=args)
+        # self.openstack = self.get_openstack_vars(args=args)
         osnag.Resource.__init__(self)
         self.cloud, self.opcloud = osnag.Resource.get_cloud(self)
 
@@ -40,13 +40,6 @@ class NovaImages(osnag.Resource):
         start = time.time()
         try:
             self.cloud.list_images()
-            # nova = Client('2', self.openstack['username'],
-            #               self.openstack['password'],
-            #               self.openstack['tenant_name'],
-            #               auth_url=self.openstack['auth_url'],
-            #               cacert=self.openstack['cacert'],
-            #               insecure=self.openstack['insecure'])
-            # nova.images.list()
         except Exception as e:
             self.exit_error(str(e))
 

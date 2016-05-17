@@ -14,7 +14,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='1.0.6',
+    version='1.0.7',
 
     description='nagios/icinga plugins to monitor an openstack installation',
     long_description=long_description,
@@ -62,7 +62,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    #packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    # packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
 
     # List run-time dependencies here.  These will be installed by pip when your
