@@ -34,17 +34,19 @@ class NovaImages(osnag.Resource):
     def __init__(self, args=None):
         self.openstack = self.get_openstack_vars(args=args)
         osnag.Resource.__init__(self)
+        cloud, opcloud = osnag.Resource.get_cloud(self)
 
     def probe(self):
         start = time.time()
         try:
-            nova = Client('2', self.openstack['username'], 
-                          self.openstack['password'], 
-                          self.openstack['tenant_name'],
-                          auth_url=self.openstack['auth_url'],
-                          cacert=self.openstack['cacert'],
-                          insecure=self.openstack['insecure'])
-            nova.images.list()
+            cloud.list_images()
+            # nova = Client('2', self.openstack['username'],
+            #               self.openstack['password'],
+            #               self.openstack['tenant_name'],
+            #               auth_url=self.openstack['auth_url'],
+            #               cacert=self.openstack['cacert'],
+            #               insecure=self.openstack['insecure'])
+            # nova.images.list()
         except Exception as e:
             self.exit_error(str(e))
 

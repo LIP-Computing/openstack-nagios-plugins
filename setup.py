@@ -14,17 +14,17 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='1.0.5',
+    version='1.0.6',
 
     description='nagios/icinga plugins to monitor an openstack installation',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/cirrax/openstack-nagios-plugins',
+    url='https://github.com/LIP-Computing/openstack-nagios-plugins',
 
     # Author details
-    author='Benedikt Trefzer',
-    author_email='benedikt.trefzer@cirrax.com',
+    author='Benedikt Trefzer, Mario David',
+    author_email='benedikt.trefzer@cirrax.com, mariojmdavid@gmail.com',
 
     # Choose your license
     license='GPLv3',
@@ -70,12 +70,14 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/technical.html#install-requires-vs-requirements-files
     install_requires=[
-        'nagiosplugin', 
+        'nagiosplugin',
+        'shade'
         'python-novaclient', 
         'python-keystoneclient', 
         'python-neutronclient', 
         'python-cinderclient',
         'python-ceilometerclient',
+        'python-openstackclient',
     ],
 
     # To provide executable scripts, use entry points in preference to the

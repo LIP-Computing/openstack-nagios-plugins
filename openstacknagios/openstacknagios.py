@@ -16,59 +16,61 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   
 
-from nagiosplugin import Resource      as NagiosResource
-from nagiosplugin import Summary       as NagiosSummary
+from nagiosplugin import Resource as NagiosResource
+from nagiosplugin import Summary as NagiosSummary
 from nagiosplugin import Check
 from nagiosplugin import Metric
 from nagiosplugin import guarded
 from nagiosplugin import ScalarContext
-
-from argparse import ArgumentParser    as ArgArgumentParser
-
+from argparse import ArgumentParser as ArgArgumentParser
 from os import environ as env
+import shade
 import sys
-
 import ConfigParser
 
 
 class Resource(NagiosResource):
+    """ Openstack specific
     """
 
-    Openstack specific
+    def get_cloud(self):
+        """ Get shade openstack and operator cloud objects
 
-    """
+        :return: cloud, opcloud are the shade openstack and operator objects
+        """
+        cloud = shade.openstack_cloud()
+        opcloud = shade.operator_cloud()
 
-    def get_openstack_vars(self,args=None):
+    def get_openstack_vars(self, args=None):
 
-       os_vars = dict(username='', password='',tenant_name='',auth_url='', cacert='')
+        os_vars = dict(username='', password='', tenant_name='', auth_url='', cacert='')
 
-       if args.filename:
-          config = ConfigParser.RawConfigParser()
-          config.read(args.filename)
-          try:
-            for r in os_vars.keys():
-               try:
-                 os_vars[r]    = config.get('DEFAULT', r )
-               except:
-                 os_vars[r]    = None
+        if args.filename:
+            config = ConfigParser.RawConfigParser()
+            config.read(args.filename)
+            try:
+                for r in os_vars.keys():
+                    try:
+                        os_vars[r] = config.get('DEFAULT', r )
+                    except:
+                        os_vars[r] = None
 
-          except Exception as e:
-            self.exit_error(str(e) + ' Filename: ' + args.filename)
-          
-       else:
-          try: 
-            for r in os_vars.keys():
-               os_vars[r]    = env['OS_' + r.upper()]
-          except Exception as e:
-            self.exit_error('missing environment variable ' + str(e))
+            except Exception as e:
+                self.exit_error(str(e) + ' Filename: ' + args.filename)
 
-       os_vars['insecure']=args.insecure
-       return os_vars
+        else:
+            try:
+                for r in os_vars.keys():
+                    os_vars[r] = env['OS_' + r.upper()]
+            except Exception as e:
+                self.exit_error('missing environment variable ' + str(e))
+
+        os_vars['insecure'] = args.insecure
+        return os_vars
 
     def exit_error(self, text):
-       print 'UNKNOWN - ' + text
-       sys.exit(3)
-
+        print 'UNKNOWN - ' + text
+        sys.exit(3)
 
 
 class Summary(NagiosSummary):
@@ -78,7 +80,6 @@ class Summary(NagiosSummary):
     def __init__(self, show):
         self.show = show
         NagiosSummary.__init__(self)
-
 
     def ok(self, results):
         return '[' + ' '.join(
@@ -90,12 +91,11 @@ class Summary(NagiosSummary):
 
 
 class ArgumentParser(ArgArgumentParser):
-
     def __init__(self,description, epilog=''):
         ArgArgumentParser.__init__(self,description=description, epilog=epilog)
 
         self.add_argument('--filename',
-                      help='file to read openstack credentials from. If not set it take the environemnt variables' )
+                      help='file to read openstack credentials from. If not set it take the environemnt variables')
         self.add_argument('-v', '--verbose', action='count', default=0,
                       help='increase output verbosity (use up to 3 times)'
                            '(not everywhere implemented)')
